@@ -1,8 +1,22 @@
 const Restaurant = require("../model/restaurant");
+const clientRedis = require('../database/redis');
 
 const Repository = {
     findAll: async () => {
-       return await Restaurant.find();
+        let restaurants;
+        const cache = await client.get('restaurants');
+        if(cache){
+            console.log('Cache hit');
+            restaurants = JSON.parse(cache);
+        }
+        else{
+            console.log('Cache miss');
+
+            restaurants = await Restaurant.find();
+
+            await client.set('restaurants', JSON.stringify(restaurants));
+        }
+        return restaurants;
     },
     create: async (name,localization) => {
         return await Restaurant.create({

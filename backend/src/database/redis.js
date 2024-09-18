@@ -10,8 +10,8 @@ let clientRedis = redis.createClient({
 });
 
 async function conectar(){
-    await client.connect();
-    client.on('error',err => {
+    await clientRedis.connect();
+    clientRedis.on('error',err => {
         console.log('Erro: '+err);
     });
     console.log('Conectado com o Redis');
