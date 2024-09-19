@@ -1,7 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 require ('dotenv').config()
-const { findAll, addRestaurant, removeRestaurantByName, findByName, updateLocalization } = require('./controller/controller');
+const { dropAll, findAll, addRestaurant, removeRestaurantByName, findByName, updateLocalization } = require('./controller/controller');
+const { uuid } = require('uuidv4');
 
 const port = process.env.API_PORT;
 const app = express();
@@ -12,13 +13,15 @@ app.use(cors({
 }))
 
 app.get("/", (req,res) => {
+    console.log(uuid());
     res.send("AQUI ACABOU!");
 })
 
 app.get('/restaurants', findAll)
-app.get('/:name', findByName)
+app.get('/restaurants/:name', findByName)
 app.post('/', addRestaurant)
-app.delete('/:name', removeRestaurantByName)
+app.delete('/restaurants/:name', removeRestaurantByName)
+app.delete('/restaurants', dropAll)
 app.patch('/:name', updateLocalization)
 
 app.listen(port, () => {

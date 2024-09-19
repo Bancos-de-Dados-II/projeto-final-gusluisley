@@ -1,11 +1,11 @@
 const mongoose = require('../database/mongoose');
 const {Schema} = mongoose;
 const { randomUUID } = require('crypto');
-
+const {uuid} = require('uuidv4')
 const restaurantSchema = new Schema({
   _id: {
     type: 'UUID',
-    default: randomUUID()
+    default: () => uuid()
   },
   name:{
     type: String,

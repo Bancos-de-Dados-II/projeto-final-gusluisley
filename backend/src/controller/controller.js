@@ -13,6 +13,18 @@ const findAll = async (req, res) => {
     }
 }
 
+const dropAll = async (req, res) => {
+    try{
+        await Repository.destroyAll();
+        res.status(StatusCodes.OK).json('Banco resetado com sucesso')
+    }
+    catch(err){
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            error: err
+        })
+    }
+}
+
 const addRestaurant = async (req, res) => {
     try{
         const { name, localization } = req.body
@@ -51,7 +63,13 @@ const findByName = async (req, res) => {
     try{
         const name = req.params.name;
         const restaurant = await Repository.findByName(name);
-        res.status(StatusCodes.OK).json(restaurant);
+        console.log(restaurant)
+        if(restaurant === null){
+            res.status(StatusCodes.NOT_FOUND).json("Não foi possível encontrar o restaurante.")
+        }
+        else{
+            res.status(StatusCodes.OK).json(restaurant);
+        }
     }
     catch(err){
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -63,22 +81,24 @@ const findByName = async (req, res) => {
 const updateLocalization = async (req, res) => {
     try{
         const newLoc = req.body;
-        let restaurant;
         const name = req.params.name;
-        if(restaurant = await Repository.findByName({name})){
-            result.localization = newLoc;
-            await result.save();
-            res.status(StatusCodes.CREATED).json(restaurant);
+        console.log('Antes')
+        let restaurant = await Repository.updateLocByName(name, newLoc)
+        if(restaurant !== null){
+            console.log()
+            res.status(StatusCodes.CREATED).json(`Localização de ${name} atualizado com sucesso!`);
         }
         else{
+            
             res.status(StatusCodes.NOT_FOUND).json("Restaurante não encontrado");
         }
     }
     catch(err){
+        console.log('Entrou')
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             error: err
         })
     }
 }
 
-module.exports = {findAll, addRestaurant, removeRestaurantByName, findByName, updateLocalization}
+module.exports = {dropAll, findAll, addRestaurant, removeRestaurantByName, findByName, updateLocalization}
