@@ -12,7 +12,6 @@ const updateCache = async () => {
 
 const Repository = {
    
-
     findAll: async () => {
         let restaurants = null;
         const cache = await clientRedis.get('restaurants');
@@ -28,9 +27,10 @@ const Repository = {
         }
         return restaurants;
     },
-    create: async (name,localization) => {
+    create: async (name,localization, description) => {
         const restaurant = await Restaurant.create({
             name,
+            description,
             localization
         });
         await updateCache()

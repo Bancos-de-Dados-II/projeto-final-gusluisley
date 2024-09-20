@@ -27,8 +27,8 @@ const dropAll = async (req, res) => {
 
 const addRestaurant = async (req, res) => {
     try{
-        const { name, localization } = req.body
-        const result = await Repository.create(name, localization)
+        const { name, localization, description } = req.body
+        const result = await Repository.create(name, localization, description)
         res.status(StatusCodes.CREATED).json(result);
     }
     catch(err){
