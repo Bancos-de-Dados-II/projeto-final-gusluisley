@@ -11,7 +11,6 @@ const updateCache = async () => {
 
 
 const Repository = {
-   
     findAll: async () => {
         let restaurants = null;
         const cache = await clientRedis.get('restaurants');
@@ -71,7 +70,13 @@ const Repository = {
         }
         await updateCache();
         return result;
-    }
+    },
+
+    findByTextIndex: async (keyword) => {
+        const result = await Restaurant.find({$text:{$search: keyword}}, 
+            {score:{ $meta: "textScore" } }).sort({ score: { $meta: "textScore" } })
+            return result;
+    }   
 }
 
 module.exports = Repository;

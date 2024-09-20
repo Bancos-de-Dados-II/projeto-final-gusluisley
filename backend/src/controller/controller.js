@@ -85,7 +85,6 @@ const updateLocalization = async (req, res) => {
         console.log('Antes')
         let restaurant = await Repository.updateLocByName(name, newLoc)
         if(restaurant !== null){
-            console.log()
             res.status(StatusCodes.CREATED).json(`Localização de ${name} atualizado com sucesso!`);
         }
         else{
@@ -101,4 +100,24 @@ const updateLocalization = async (req, res) => {
     }
 }
 
-module.exports = {dropAll, findAll, addRestaurant, removeRestaurantByName, findByName, updateLocalization}
+const findByKeyword = async (req, res) => {
+    const keyword = req.params.keyword
+    try{
+        const result = await Repository.findByTextIndex(keyword);
+        if(result.length>0){
+            res.status(StatusCodes.OK).json(result);
+        }
+        else{
+            res.status(StatusCodes.NOT_FOUND).json("Desculpe, não encontrei nenhum restaurante com sua busca!");
+        }
+    }
+    catch(err){
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                error: err
+            })
+    }
+    
+    
+}
+
+module.exports = {findByKeyword, dropAll, findAll, addRestaurant, removeRestaurantByName, findByName, updateLocalization}

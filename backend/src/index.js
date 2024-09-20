@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 require ('dotenv').config()
-const { dropAll, findAll, addRestaurant, removeRestaurantByName, findByName, updateLocalization } = require('./controller/controller');
+const { dropAll, findAll, addRestaurant, removeRestaurantByName, findByName, updateLocalization, findByKeyword } = require('./controller/controller');
 const { uuid } = require('uuidv4');
 
 const port = process.env.API_PORT;
@@ -23,6 +23,7 @@ app.post('/', addRestaurant)
 app.delete('/restaurants/:name', removeRestaurantByName)
 app.delete('/restaurants', dropAll)
 app.patch('/:name', updateLocalization)
+app.get('/restaurants/busca/:keyword', findByKeyword)
 
 app.listen(port, () => {
     console.log(`Rodando no host:http://localhost:${port}`)
