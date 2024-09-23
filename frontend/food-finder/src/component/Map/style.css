@@ -1,5 +1,51 @@
 .map-container{
-    width: 70vw;
-    height: 70vh;
+    width: 90%;
+    height: 80%;
     z-index: 30;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
 }
+
+#root{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.form{
+    width: 400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.input{
+    width: 250px;
+    border-radius: 5px;
+
+}
+
+.btn{
+    background-color: aqua;
+    border-radius: 5px;
+    width: 100px;
+    height: 30px;
+    transition: 0.4s;
+}
+.btn:hover{
+    background-color:rgba(0, 255, 255, 0.507);
+    
+}
+
+.div{
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+

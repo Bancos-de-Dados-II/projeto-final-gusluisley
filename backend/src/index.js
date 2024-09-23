@@ -19,7 +19,7 @@ app.get("/", (req,res) => {
 
 app.get('/restaurants', findAll)
 app.get('/restaurants/:name', findByName)
-app.post('/', addRestaurant)
+app.post('/restaurants', addRestaurant)
 app.delete('/restaurants/:name', removeRestaurantByName)
 app.delete('/restaurants', dropAll)
 app.patch('/:name', updateLocalization)
