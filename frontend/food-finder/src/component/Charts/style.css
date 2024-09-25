@@ -6,3 +6,29 @@
     width: 100vw;
     height: 100vh;
 }
+
+.div-link{
+    background-color: #21313C;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    
+}
+.link{
+    width: 60px;
+    height: 35px;
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+    background-color: aqua;
+    text-decoration: none;
+    margin-right: 100px;
+    margin-top: 10px;
+    border-style: solid 1px;
+    border-radius: 5px;
+    border-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}

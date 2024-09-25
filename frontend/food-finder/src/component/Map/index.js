@@ -125,14 +125,15 @@ function Map() {
           <MapContext/>
         </MapContainer>
         <div className='form'>
-          <input value={inputValue} onChange={updateInput} placeholder='Ex: Fast-Lanches' className='input'/>
+          <input value={inputValue} onChange={updateInput} placeholder='Nome ' className='input'/>
+          <input value = {descriptionValue} onChange={updateDescriptionInput} placeholder='Descrição / Ex: Pizzaria' className='input'/>
           <button className='btn' onClick={salvarRestaurante}>Salvar</button><br/>
-          <input value = {descriptionValue} onChange={updateDescriptionInput} placeholder='Ex: Fastfood' className='input'/>
-          <input value = {textSearch} placeholder='Ex: Pizzaria' onChange={updateSearchInput} className='input'/>
+          <input value = {textSearch} placeholder='Buscar / Ex: Pizza' onChange={updateSearchInput} className='input' id='busca'/>
           <button className='btn' onClick={buscaPorTexto}>Buscar</button>
         </div>
         <div className='div'>
           <ul className='lista'>
+          <h4>Restaurantes cadastrados:</h4>
             {data?.map((item) => {
               return(
                 <li key={item.id}>
@@ -142,6 +143,7 @@ function Map() {
             })}
           </ul>
           <ul className='lista'>
+            <h4>Resultados da pesquisa:</h4>
             {searchResult?.map((item) => {
               return(
                 <li key={item.id}>

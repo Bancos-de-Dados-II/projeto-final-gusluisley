@@ -1,10 +1,7 @@
 const Restaurant = require("../model/restaurant");
 const clientRedis = require('../database/redis');
 const updateCache = async () => {
-    console.log('Voltou')
-    console.log(await clientRedis.get('restaurants'))
     await clientRedis.del('restaurants')
-    console.log(await clientRedis.get('restaurants'))
     const novoCache = await Restaurant.find()
     await clientRedis.set('restaurants', JSON.stringify(novoCache))
 }
@@ -58,7 +55,6 @@ const Repository = {
     },
     destroyAll: async () => {
         const restaurants = await Restaurant.deleteMany({})
-        console.log(restaurants)
         await updateCache()
         return restaurants;
     },

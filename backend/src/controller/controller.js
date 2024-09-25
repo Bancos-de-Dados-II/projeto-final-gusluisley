@@ -28,11 +28,9 @@ const dropAll = async (req, res) => {
 const addRestaurant = async (req, res) => {
     try{
         if(req.body.localization.coordinates.lat!==null){
-            console.log("Recebeu nulo")
             const arrayBody = [req.body.localization.coordinates.lng, req.body.localization.coordinates.lat]
             req.body.localization.coordinates = arrayBody;
         }
-        console.log(req.body)
         const { name, localization, description } = req.body
         const result = await Repository.create(name, localization, description)
         res.status(StatusCodes.CREATED).json(result);
@@ -69,7 +67,6 @@ const findByName = async (req, res) => {
     try{
         const name = req.params.name;
         const restaurant = await Repository.findByName(name);
-        console.log(restaurant)
         if(restaurant === null){
             res.status(StatusCodes.NOT_FOUND).json("Não foi possível encontrar o restaurante.")
         }
@@ -88,7 +85,6 @@ const updateLocalization = async (req, res) => {
     try{
         const newLoc = req.body;
         const name = req.params.name;
-        console.log('Antes')
         let restaurant = await Repository.updateLocByName(name, newLoc)
         if(restaurant !== null){
             res.status(StatusCodes.CREATED).json(`Localização de ${name} atualizado com sucesso!`);
@@ -99,7 +95,6 @@ const updateLocalization = async (req, res) => {
         }
     }
     catch(err){
-        console.log('Entrou')
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             error: err
         })
