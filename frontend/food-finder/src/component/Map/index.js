@@ -7,10 +7,11 @@ import L from 'leaflet';
 import marker from '../../assets/marcador.png';
 import { useRestaurantData } from '../../hooks/useRestaurantData';
 import { useRestaurantDataMutate } from '../../hooks/useRestaurantDataMutate';
-import axios from 'axios';
+// import axios from 'axios';
 import { useRestaurantDeleteMutate } from '../../hooks/useRestaurantDeleteMutate';
-import { useTextSearchData } from '../../hooks/useTextSearchData';
-
+// import { useSearchRestaurantData } from '../../hooks/useSearchRestaurantData';
+import { fetchSearchResults } from '../../hooks/useSearchRestaurantData';
+import { Link } from 'react-router-dom';
 
 const myIcon = new L.Icon({
     iconUrl: marker,
@@ -36,14 +37,15 @@ function Map() {
   const initialPosition = [-6.88817982014655, -38.55806053465703];
   const [markerPosition, setMarkerPosition] = useState([0,0])
   const [textSearch, setTextSearch] = useState('')
+  const [searchResult, setSearchResult] = useState(null)
   const [inputValue, setInputValue] = useState('')
   const [descriptionValue, setDescriptionValue] = useState('')
   const [marcadorSelecionado, setMarcadorSelecionado] = useState(null);
   const {mutate} = useRestaurantDataMutate()
   const deleteMutate = useRestaurantDeleteMutate().mutate
   const {data} = useRestaurantData()
-
-
+  
+  
 
   function GetAllRestaurantes() {
     console.log(data)
@@ -51,7 +53,7 @@ function Map() {
       
       return (
         
-      <Marker key={restaurant.id} position={restaurant.localization.coordinates} icon={myIcon}>
+      <Marker key={restaurant.id} position={[restaurant.localization.coordinates[1],restaurant.localization.coordinates[0]]} icon={myIcon}>
         <Popup>{restaurant.name}<br/>{restaurant.description} <br/> 
         <button onClick={async () => {await deleteRestaurant(restaurant.name)}}>Deletar</button></Popup>
       </Marker>
@@ -89,19 +91,9 @@ function Map() {
   }
 
   async function buscaPorTexto(e){
-    const dataBusca = await axios.get('http://localhost:4000/restaurants/buscar/'+textSearch)
-    return(
-      <ul className='lista'>
-       {dataBusca?.map((item) => {
-              return(
-                <li key={item.id}>
-                  {item.name}
-                </li>
-              )
-            })}
-    </ul>)
-    
-   
+    const data = await fetchSearchResults(textSearch)
+    setSearchResult(data)
+    return
   }
   
   function SetMarker() {
@@ -118,7 +110,10 @@ function Map() {
 
     return (
       <>
-      <h1>Food Finder</h1>
+      <div className='header'>
+          <h1 className='title'>Food Finder</h1>  
+          <Link className='btn' id='link' to="/charts">Charts</Link>
+      </div>
         <MapContainer center={markerPosition} zoom={14} scrollWheelZoom={true} className='map-container' >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -146,7 +141,15 @@ function Map() {
               )
             })}
           </ul>
-          <buscaPorTexto/>
+          <ul className='lista'>
+            {searchResult?.map((item) => {
+              return(
+                <li key={item.id}>
+                  {item.name}
+                </li>
+              )
+            })}
+          </ul>
         </div>
       </>
     );

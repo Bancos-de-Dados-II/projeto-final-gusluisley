@@ -29,7 +29,7 @@ const addRestaurant = async (req, res) => {
     try{
         if(req.body.localization.coordinates.lat!==null){
             console.log("Recebeu nulo")
-            const arrayBody = [req.body.localization.coordinates.lat, req.body.localization.coordinates.lng]
+            const arrayBody = [req.body.localization.coordinates.lng, req.body.localization.coordinates.lat]
             req.body.localization.coordinates = arrayBody;
         }
         console.log(req.body)
